@@ -75,6 +75,11 @@ considers this form to be a kind of canonical form for loops:
    an unconditional branch back to the top, making the loop one instruction
    shorter.
 
+One instruction may not seem like a lot, but in the code in this example,
+this optimization gives a 40% speedup on the machine I'm typing this on
+(measured over multiple runs). The moral: there are reasons why compiler
+writers think about branches a lot.
+
 Also, this isn't just an LLVM thing; GCC does the same thing (where it's called
 "loop header cloning"), and I'm familiar with several other C/C++ compilers
 that do this too.
