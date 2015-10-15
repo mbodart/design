@@ -262,22 +262,26 @@ which determines at runtime whether the branch is taken.
 #### `tableswitch`
 
 This is conceptually a jump table. It has an array of labels, indexed starting
-from 0, and an index operand, and it selects which label to branch to with that
-index. When the index is out of bounds, it has a default label as well that it
-uses in that case.
+from 0, a "default" label, an index operand, and a list of `case` nodes
+(which are described below).
 
-Labels may either be references to labels in the enclosing scope, or
-declarations of labels of case blocks enclosed within the body. The body of a
-`tableswitch` can contain only `case` blocks. Control falls through between the
-`case` blocks.
+`tableswitch` selects which label to branch to by looking up the index value
+in the label array, and transferring control to that label. If the index is out
+of bounds, it transfers control to the "default" label.
+
+The labels in the array, and the default label, may either be references to
+labels in enclosing constructs, or to labels in the `case` nodes in the list.
+
+Control "falls through" between the `case` blocks (this behavior can be
+overridden by inserting an explicit `br`, for example).
 
 #### `case`
 
-`case` statements can only appear as immediate children of `tableswitch`
-statements. They have a label, which must be declared in the `tableswitch`
-statement's table, and a body. Control falls through the end of a `case`
-block into the following `case` block, or the end of the `tableswitch` in
-the case of the last `case`.
+`case` nodes can only appear as immediate children of `tableswitch` statements.
+They have a label, which must be declared in the immediately enclosing
+`tableswitch`'s array, and a body which can contain arbitrary code. Control
+falls through the end of a `case` block into the following `case` block, or
+the end of the `tableswitch` in the case of the last `case`.
 
 ### Examples.
 
