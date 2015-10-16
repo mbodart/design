@@ -112,13 +112,17 @@ that works this way, which given how common this pattern is in C++ compilers,
 is a lot. Also, this is just a simple example; more complicated examples
 happen too, especially when `tableswitch` is involved.
 
-It's also suboptimal for debuggers, profilers, code coverage, and other tools.
-Consider someone single-stepping through this code at the WebAssembly level.
-Should stepping through an `if(x) break` be one step or two? Should the loop
-backedge be a separate step? As things stand right now, tools are going to
-want to do some work to present the developer with view of their code with
-"obvious" optimizations applied, and then translate back and forth between
-that view and the actual code.
+It's also suboptimal for WebAssembly-level (low-level) debuggers, profilers,
+code coverage, and other tools. If compilers are meant to use `if(x) break`
+as if it were a conditional branch, implementations are supposed to recognize
+it as a pattern, and developers are supposed to become accustomed to seeing that
+in their hot loops, debuggers should consider letting developers "single-step"
+through it as if it were a single instruction as well. Similarly, low-level
+profiling and code coverage tools often focus on branches, whether it's
+branches that stall or branches with arms that aren't taken. These tools may
+also find themselves wanting to filter out some of the branching implied by
+the literal semantics in order to declutter their output. All these things are
+doable, but it adds complexity.
 
 Things are also complicated for high-level source language debugging. The task
 of mapping from WebAssembly code back to high-level code is complicated in the
