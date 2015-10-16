@@ -96,8 +96,8 @@ the following is the best WebAssembly code LLVM could possibly produce:
      loop {
        y[i] = a * x[i] + y[i];
        i = i + 1;
-       if (i == n) // conditional branch over the if body
-         break;    // unconditional branch out of the loop
+       if (i == n) // branch over the if body
+         break;    // branch out of the loop
      }             // branch back to top
    }
 ```
