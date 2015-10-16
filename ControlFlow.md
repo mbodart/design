@@ -141,7 +141,7 @@ exactly what we want:
      loop {
        y[i] = a * x[i] + y[i];
        i = i + 1;
-       br_if top (i != n); // conditional branch
+       br_if $top (i != n); // conditional branch
      }
    }
 ```
